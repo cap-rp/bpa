@@ -1,0 +1,82 @@
+{
+  "name": "@cap-rp/bpa",
+  "version": "1.0.0",
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "main": "cds-plugin.js",
+  "files": [
+    "lib",
+    "srv"
+  ],
+  "peerDependencies": {
+    "@sap/cds": ">=8"
+  },
+  "dependencies": {
+    "@sap-cloud-sdk/connectivity": "^3.13.0",
+    "@sap-cloud-sdk/http-client": "^3.13.0",
+    "@sap-cloud-sdk/util": "^3.13.0"
+  },
+  "devDependencies": {
+    "jest": "^29.7.0",
+    "chai": "^4.3.10",
+    "@sap/cds": ">=8",
+    "@sap/cds-dk": ">=8"
+  },
+  "scripts": {
+    "lint": "npx eslint .",
+    "test": "npx jest",
+    "test-with-coverage": "npx jest --coverage"
+  },
+  "cds": {
+    "requires": {
+      "destinations": true,
+      "connectivity": true,
+      "Workflow": {
+        "kind": "rest",
+        "model": "srv/external/SPA_Workflow_Runtime",
+        "credentials": {
+          "destination": "SAP_BTP_BPA_OACC",
+          "path": "/public/workflow/rest"
+        }
+      },
+      "bpa-workflow": {
+        "[development]": {
+          "kind": "bpa-workflow",
+          "destination": "SAP_BTP_BPA_OACC"
+        },
+        "[hybrid]": {
+          "destination": "SAP_BTP_BPA_OACC",
+          "kind": "bpa-workflow"
+        },
+        "[production]": {
+          "destination": "SAP_BTP_BPA_OACC",
+          "kind": "bpa-workflow"
+        }
+      },
+      "inbox": {
+        "[development]": {
+          "kind": "bpa-workflow",
+          "destination": "SAP_BPA_OA2P"
+        },
+        "[hybrid]": {
+          "destination": "SAP_BPA_OA2P",
+          "kind": "bpa-workflow"
+        },
+        "[production]": {
+          "destination": "SAP_BPA_OA2P",
+          "kind": "bpa-workflow"
+        }
+      },
+      "kinds": {
+        "bpa-workflow": {
+          "impl": "@cap-rp/bpa/srv/bpa-workflow"
+        },
+        "bpa-inbox": {
+          "impl": "@cap-rp/bpa/srv/bpa-inbox"
+        }
+      }
+    }
+  }
+}
